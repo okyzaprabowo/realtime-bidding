@@ -1,0 +1,40 @@
+<html>
+<head>
+	<title>Enter</title>
+	<script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+</head>
+
+<body>
+	<h1>Insert Bid</h1>
+
+	<form name='bidder-form'>
+		<label>Bidder name: </label>
+		<input id="bidder-name" type="text" name="bidder-name">
+		<br>
+		<p>
+		<label>Bidder value: </label>
+		<input id="bidder-value" type="text" name="bidder-value">
+		<br>
+		<p>
+		<input type="button" id="bidder-submit" value="Submit"></button>
+	</form>
+	<p id="notification"></p>
+</body>
+
+<script type="text/javascript">
+	$("#bidder-submit").click(function(){
+		var name  = $("#bidder-name").val();
+		var value  = $("#bidder-value").val();
+		console.log("[insert.html] Sending data...");
+		$.ajax({method: "POST", url: "../api/insert.php", data: {"bidder_name": name, "bidder_value": value}, success: function(result){
+	    	console.log("[insert.html] Success...");
+	    	console.log("[insert.html] " + result);
+	    	$("#notification").text( "Sending data is successful");
+	    	setTimeout(function(){ 
+	    		$("#notification").text( "");
+	    	}, 1000);
+	    	;
+	  	}});
+	});
+</script>
+</html>
