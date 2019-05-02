@@ -4,7 +4,7 @@ require("phpMQTT.php");
 
 $host         = "localhost";
 $username     = "root";
-$password     = "";
+$password     = "123456";
 $dbname       = "bid";
 
 $server = "broker.hivemq.com";     // change if necessary io.adafruit.com
@@ -27,12 +27,21 @@ $bidder_value  = $_POST['bidder_value'];
 $sql = "INSERT INTO bidder (bidder_name, bidder_value) VALUES ('". $bidder_name ."', '" . $bidder_value ."')";
 
 if (mysqli_query($conn, $sql)) {
-	$mqtt = new phpMQTT($server, $port, $client_id);
-	if ($mqtt->connect(true, NULL, $username, $password)) {
-		$mqtt->publish("mqtt/bidapp/bkmraya02", "query");
-		$mqtt->close();
-	} else {
-	    echo "Time out!\n";
+	// $mqtt = new phpMQTT($server, $port, $client_id);
+	// if ($mqtt->connect(true, NULL, $username, $password)) {
+	// 	$mqtt->publish("mqtt/bidapp/bkmraya02", "query");
+	// 	$mqtt->close();
+	// } else {
+	//     echo "Time out!\n";
+	// }
+
+	// Try this if you use Heroku
+	try{
+		file_get_contents("https://bid-publisher.herokuapp.com");
+    	echo "[using herokuapp] New record created successfully";
+	}
+	catch(Exception $e) {
+	  echo 'Message: ' .$e->getMessage();
 	}
     echo "New record created successfully";
 } else {
